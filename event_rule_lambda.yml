@@ -1,0 +1,122 @@
+AWSTemplateFormatVersion: 2010-09-09
+Transform: AWS::Serverless-2016-10-31
+
+Resources:
+
+  LambdaRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: EventLambdaRole
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - lambda.amazonaws.com
+                - logs.amazonaws.com
+            Action:
+              - sts:AssumeRole
+      Path: /
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+      Policies:
+        - PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Effect: Allow
+                Action: lambda:InvokeFunction
+                Resource: !Sub arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:'*'
+              - Effect: Allow
+                Action: events:PutEvents
+                Resource: "*"
+          PolicyName: AllowEvent
+
+  RdsEventCheckLambda:
+    Type: AWS::Serverless::Function
+    Properties:
+      InlineCode: |
+            import json
+            def lambda_handler(event, context):
+                print(event)
+                print(json.dumps(event))
+                # return {
+                #     statusCode: 200,
+                #     body: Event processed
+                # }
+      Handler: index.lambda_handler
+      Runtime: python3.9
+      FunctionName: Rds_create_snaphots_check
+      
+  RdsInstanceEventRule:
+    Type: AWS::Events::Rule
+    Properties:
+      Name: rds-instsnce-event-rule
+      Description: Rule to trigger a Lambda function on RDS instance create events
+      EventBusName: default
+      EventPattern:
+        source:
+          - aws.rds
+        detail-type:
+          - RDS DB Snapshot Event
+        detail:
+          EventCategories:
+            - creation
+        # detail-type:
+        #   - RDS DB Snapshot Event
+        # detail:
+        #   eventName:
+        #     - createDBSnapshot
+          SourceType: 
+            - SNAPSHOT
+          EventID: 
+            - RDS-EVENT-0042 # snapshot complete
+      State: ENABLED
+      Targets:
+        - Arn: !GetAtt RdsEventCheckLambda.Arn
+          Id: RdsInstanceEventRule
+
+  
+
+  RdsClusterEventRule:
+    Type: AWS::Events::Rule
+    Properties:
+      Name: rds-cluster-event-rule
+      Description: Rule to trigger a Lambda function on RDS cluster create events
+      EventBusName: default
+      EventPattern:
+        source:
+          - aws.rds
+        detail-type:
+          - RDS DB Cluster Snapshot Event
+        detail:
+          EventCategories:
+            - backup
+          SourceType: 
+             - CLUSTER_SNAPSHOT
+      State: ENABLED
+      Targets:
+        - Arn: !GetAtt RdsEventCheckLambda.Arn
+          Id: RdsClusterEventRule
+
+  LogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: !Sub /aws/lambda/${RdsEventCheckLambda}
+      RetentionInDays: 7
+
+  PermissionForEventsInstanceToInvokeLambda: 
+    Type: AWS::Lambda::Permission
+    Properties: 
+      FunctionName: !Ref RdsEventCheckLambda
+      Action: lambda:InvokeFunction
+      Principal: events.amazonaws.com
+      SourceArn: !GetAtt RdsInstanceEventRule.Arn
+
+  PermissionForEventsClusterToInvokeLambda: 
+    Type: AWS::Lambda::Permission
+    Properties: 
+      FunctionName: !Ref RdsEventCheckLambda
+      Action: lambda:InvokeFunction
+      Principal: events.amazonaws.com
+      SourceArn: !GetAtt RdsClusterEventRule.Arn
