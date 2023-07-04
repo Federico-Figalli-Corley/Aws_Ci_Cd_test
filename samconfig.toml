@@ -1,13 +1,9 @@
  version=0.1
- [default.global.parameters]
- stack_name = "common-stack"
- 
+ [default.global.parameters] 
  [default.deploy.parameters]
  stack_name = "my-app-stack"
- s3_bucket = "artifacts-eu-central-1-052795041213"
- s3_prefix = "MyPipeline/"
+ s3_bucket = "aws-samcli-sourcebucket-eu-central-1"
  region = "eu-central-1"
  confirm_changeset = true
  capabilities = "CAPABILITY_IAM CAPABILITY_AUTO_EXPAND CAPABILITY_NAMED_IAM"
- tags = "project=\"my-application\" stage=\"production\""
 
