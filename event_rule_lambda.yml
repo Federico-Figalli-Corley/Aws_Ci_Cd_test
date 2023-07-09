@@ -76,8 +76,6 @@ Resources:
         - Arn: !GetAtt RdsEventCheckLambda.Arn
           Id: RdsInstanceEventRule
 
-  
-
   RdsClusterEventRule:
     Type: AWS::Events::Rule
     Properties:
