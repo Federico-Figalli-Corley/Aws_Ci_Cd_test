@@ -3,7 +3,7 @@ Transform: AWS::Serverless-2016-10-31
 
 Resources:
 
-  SGPing:
+  SGPingAllow:
     Type: AWS::EC2::SecurityGroup
     Properties:
       GroupDescription: SG to test ping
@@ -19,3 +19,10 @@ Resources:
           ToPort: -1
           CidrIp: 0.0.0.0/0
       GroupName: Ip allow
+
+
+Outputs:
+  SgPingAllowId:
+    Value: !GetAtt SGPingAllow.GroupId
+    Export:
+      Name: SgPingAllowId
