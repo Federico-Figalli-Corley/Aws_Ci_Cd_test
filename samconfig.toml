@@ -1,0 +1,22 @@
+version=0.1
+[default]
+[default.buld.parameters]
+[default.global.parameters] 
+[default.deploy.parameters]
+stack_name = "sg-ping-allow"
+s3_bucket = "aws-samcli-sourcebucket-eu-central-1"
+region = "eu-central-1"
+confirm_changeset = true
+capabilities = "CAPABILITY_IAM CAPABILITY_AUTO_EXPAND CAPABILITY_NAMED_IAM"
+
+# Comment
+#
+# [dev]
+# [dev.buld.parameters]
+# [dev.global.parameters] 
+# [dev.deploy.parameters]
+
+# [prod]
+# [prod.buld.parameters]
+# [prod.global.parameters] 
+# [prod.deploy.parameters]
