@@ -2,7 +2,6 @@ AWSTemplateFormatVersion: 2010-09-09
 Transform: AWS::Serverless-2016-10-31
 
 Resources:
-
   SGPingAllow:
     Type: AWS::EC2::SecurityGroup
     Properties:
@@ -19,7 +18,6 @@ Resources:
           ToPort: -1
           CidrIp: 0.0.0.0/0
       GroupName: Ip allow
-
 
 Outputs:
   SgPingAllowId:
