@@ -62,11 +62,6 @@ Resources:
         detail:
           EventCategories:
             - creation
-        detail-type:
-          - RDS DB Snapshot Event
-        detail:
-          eventName:
-            - createDBSnapshot
           SourceType: 
             - SNAPSHOT
           EventID: 
