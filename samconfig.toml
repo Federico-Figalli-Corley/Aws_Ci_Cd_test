@@ -6,8 +6,12 @@ version=0.1
 stack_name = "sg-ping-allow"
 s3_bucket = "aws-samcli-sourcebucket-eu-central-1"
 region = "eu-central-1"
-confirm_changeset = true
+no_confirm_changeset = true
 capabilities = "CAPABILITY_IAM CAPABILITY_AUTO_EXPAND CAPABILITY_NAMED_IAM"
+tags = [
+    'Name=Test-Ci/Cd',
+    'Env=test' 
+]
 
 # Comment
 #
