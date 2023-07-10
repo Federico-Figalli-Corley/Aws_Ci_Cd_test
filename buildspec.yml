@@ -3,7 +3,8 @@ phases:
   install:
     runtime-versions:
         python: 3.8
-        jq: 1.6
+    commands:
+      - yum install -y jq
   build:
     commands:
       - sam build
