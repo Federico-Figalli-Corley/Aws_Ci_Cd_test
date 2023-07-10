@@ -3,6 +3,7 @@ phases:
   install:
     runtime-versions:
         python: 3.8
+        jq: 1.6
   build:
     commands:
       - sam build
