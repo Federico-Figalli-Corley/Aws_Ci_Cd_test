@@ -8,9 +8,9 @@ phases:
     #   - apt install -y jq
   build:
     commands:
-      - echo Pushed branch $CODEBUILD_WEBHOOK_HEAD_REF
+      - echo "${CODEBUILD_WEBHOOK_HEAD_REF}""
       - sam build
   post_build:
     commands:
-      - python3 ./pipeline_scripts/get_last_snapshot.sh
+      - bash ./pipeline_scripts/get_last_snapshot.sh
       - sam deploy --parameter-overrides DBSnapshotIdentifier=$ARN Env=$CODEBUILD_WEBHOOK_HEAD_REF
