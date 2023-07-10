@@ -8,7 +8,7 @@ phases:
     #   - apt install -y jq
   build:
     commands:
-      - echo Pushed branch: $CODEBUILD_WEBHOOK_HEAD_REF
+      - echo Pushed branch $CODEBUILD_WEBHOOK_HEAD_REF
       - sam build
   post_build:
     commands:
