@@ -9,6 +9,7 @@ phases:
   build:
     commands:
       - export GIT_BRANCH=$CODEBUILD_WEBHOOK_HEAD_REF
+      - echo Env=$GIT_BRANCH 
       - sam build
   post_build:
     commands:
