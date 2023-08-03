@@ -3,6 +3,7 @@ version=0.1
 [default.buld.parameters]
 [default.global.parameters] 
 [default.deploy.parameters]
+profile = "Lab-07"
 stack_name = "sg-ping-allow"
 s3_bucket = "aws-samcli-sourcebucket-eu-central-1"
 region = "eu-central-1"

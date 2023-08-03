@@ -1,6 +1,5 @@
-AWSTemplateFormatVersion: 2010-09-09
+AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
-
 Resources:
   SGPingAllow:
     Type: AWS::EC2::SecurityGroup
@@ -8,19 +7,21 @@ Resources:
       GroupDescription: SG to test ping
       VpcId: vpc-0ef4955d2055d1ac5
       SecurityGroupIngress:
-        - IpProtocol: icmp
-          FromPort: -1
-          ToPort: -1
-          CidrIp: 0.0.0.0/0
+      - IpProtocol: icmp
+        FromPort: -1
+        ToPort: -1
+        CidrIp: '0.0.0.0/0'
       SecurityGroupEgress:
-        - IpProtocol: icmp
-          FromPort: -1
-          ToPort: -1
-          CidrIp: 0.0.0.0/0
+      - IpProtocol: icmp
+        FromPort: -1
+        ToPort: -1
+        CidrIp: '0.0.0.0/0'
       GroupName: Ip allow
-
 Outputs:
   SgPingAllowId:
-    Value: !GetAtt SGPingAllow.GroupId
+    Value:
+      Fn::GetAtt:
+      - SGPingAllow
+      - GroupId
     Export:
       Name: SgPingAllowId
