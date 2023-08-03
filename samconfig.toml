@@ -3,25 +3,16 @@ version=0.1
 [default.buld.parameters]
 [default.global.parameters] 
 [default.deploy.parameters]
-profile = "Lab-07"
-stack_name = "sg-ping-allow"
+stack_name = "ecs-blue-green"
 s3_bucket = "aws-samcli-sourcebucket-eu-central-1"
 region = "eu-central-1"
 no_confirm_changeset = true
+parameter_overrides=[
+    'Vpc=vpc-0ef4955d2055d1ac5',
+    'Subnet1=subnet-07fd830bec126f7f6',
+    'Subnet2=subnet-0d66ff443ac83af6a'
+]
 capabilities = "CAPABILITY_IAM CAPABILITY_AUTO_EXPAND CAPABILITY_NAMED_IAM"
 tags = [
-    'Name=Test-Ci/Cd',
-    'Env=test' 
+    'Env=test'
 ]
-
-# Comment
-#
-# [dev]
-# [dev.buld.parameters]
-# [dev.global.parameters] 
-# [dev.deploy.parameters]
-
-# [prod]
-# [prod.buld.parameters]
-# [prod.global.parameters] 
-# [prod.deploy.parameters]

@@ -2,21 +2,15 @@ version: 0.2
 phases:
   pre_build:
     commands:
-      - yarn
       - GIT_BRANCH=${CODEBUILD_WEBHOOK_HEAD_REF:-$CODEBUILD_SOURCE_VERSION}
       - export GIT_BRANCH=$(echo $GIT_BRANCH | sed "s|branch/||" | sed "s|/|-|g" | sed "s|refs-heads-||")
   install:
     runtime-versions:
         python: 3.8
-    # jq is also installed
-    # commands:
-    #   - apt install -y jq
   build:
     commands:
-      #- export GIT_BRANCH=$CODEBUILD_WEBHOOK_HEAD_REF
       - echo $GIT_BRANCH 
       - sam build
   post_build:
     commands:
-      - bash ./pipeline_scripts/get_last_snapshot.sh
-      - sam deploy --parameter-overrides DBSnapshotIdentifier=$ARN Env=$GIT_BRANCH
+      - sam deploy
